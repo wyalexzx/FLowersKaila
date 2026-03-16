@@ -1,0 +1,903 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>For Kaila 🌸</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <style>
+    :root {
+      --bg: radial-gradient(circle at top, #2b133b 0, #110016 45%, #050111 100%);
+      --petal-pink: #fda4af;
+      --petal-soft: #fecaca;
+      --rose-red: #fb7185;
+      --stem: #16a34a;
+      --leaf: #22c55e;
+      --heart: #f97373;
+      --text-main: #fdf2f8;
+      --text-muted: #f9a8d4;
+      --glass: rgba(24, 24, 37, 0.72);
+      --glass-border: rgba(248, 187, 208, 0.5);
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      min-height: 100vh;
+      background: var(--bg);
+      color: var(--text-main);
+      padding: 1.5rem;
+      overflow-y: auto;
+      overflow-x: hidden;
+      display: block;
+    }
+
+    .stars {
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      background-image:
+        radial-gradient(circle at 10% 20%, rgba(248, 250, 252, 0.22) 0, transparent 50%),
+        radial-gradient(circle at 80% 10%, rgba(251, 207, 232, 0.22) 0, transparent 55%),
+        radial-gradient(circle at 50% 90%, rgba(251, 113, 133, 0.2) 0, transparent 55%);
+      opacity: 0.7;
+      mix-blend-mode: screen;
+      z-index: -2;
+    }
+
+    .noise {
+      pointer-events: none;
+      position: fixed;
+      inset: 0;
+      opacity: 0.065;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 160 160' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='1.1' numOctaves='3' stitchTiles='noStitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.95'/%3E%3C/svg%3E");
+      mix-blend-mode: soft-light;
+      z-index: -1;
+    }
+
+    .bouquet-shell {
+      max-width: 960px;
+      width: 100%;
+      display: grid;
+      grid-template-columns: minmax(0, 1.4fr) minmax(0, 1fr);
+      gap: 2.25rem;
+      padding: 1.75rem;
+      border-radius: 1.75rem;
+      background: radial-gradient(circle at top left, rgba(251, 207, 232, 0.3), transparent 55%),
+                  radial-gradient(circle at bottom right, rgba(248, 113, 113, 0.18), transparent 55%),
+                  var(--glass);
+      border: 1px solid var(--glass-border);
+      box-shadow:
+        0 24px 80px rgba(15, 23, 42, 0.95),
+        0 0 0 1px rgba(248, 187, 208, 0.35);
+      position: relative;
+      overflow: hidden;
+    }
+
+    @media (max-width: 900px) {
+      body {
+        padding: 1.1rem;
+        overflow: auto;
+      }
+
+      .bouquet-shell {
+        grid-template-columns: minmax(0, 1fr);
+        padding: 1.4rem;
+      }
+    }
+
+    .sparkle-orb {
+      position: absolute;
+      width: 240px;
+      height: 240px;
+      border-radius: 999px;
+      background:
+        radial-gradient(circle at 30% 0, rgba(254, 249, 195, 0.9) 0, transparent 55%),
+        radial-gradient(circle at 70% 70%, rgba(244, 114, 182, 0.85) 0, transparent 60%);
+      opacity: 0.25;
+      filter: blur(3px);
+      mix-blend-mode: screen;
+      animation: floatOrb 16s ease-in-out infinite alternate;
+      pointer-events: none;
+      z-index: -1;
+    }
+
+    .sparkle-orb--left {
+      top: -90px;
+      left: -40px;
+    }
+
+    .sparkle-orb--right {
+      bottom: -120px;
+      right: -60px;
+      animation-delay: -5s;
+    }
+
+    @keyframes floatOrb {
+      0% {
+        transform: translate3d(0, 0, 0) scale(1);
+      }
+      50% {
+        transform: translate3d(16px, -10px, 0) scale(1.03);
+      }
+      100% {
+        transform: translate3d(-10px, 14px, 0) scale(0.98);
+      }
+    }
+
+    .bouquet-left {
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      gap: 1.5rem;
+    }
+
+    .intro-block {
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+    }
+
+    .tiny-label {
+      font-size: 0.7rem;
+      text-transform: uppercase;
+      letter-spacing: 0.22em;
+      color: var(--text-muted);
+    }
+
+    .title-row {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      flex-wrap: wrap;
+    }
+
+    .k-heart-orb {
+      width: 42px;
+      height: 42px;
+      border-radius: 999px;
+      background:
+        radial-gradient(circle at 30% 0, #fee2e2 0, #b91c1c 55%);
+      display: grid;
+      place-items: center;
+      box-shadow:
+        0 0 24px rgba(248, 113, 113, 0.9),
+        0 0 60px rgba(251, 113, 133, 0.55);
+      font-weight: 700;
+      font-size: 1.1rem;
+    }
+
+    .main-title {
+      font-size: clamp(1.9rem, 3vw, 2.4rem);
+      font-weight: 700;
+      letter-spacing: 0.04em;
+    }
+
+    .main-title span {
+      background: linear-gradient(to right, #f97373, #fb7185, #f9a8d4);
+      -webkit-background-clip: text;
+      color: transparent;
+    }
+
+    .subtitle {
+      font-size: 0.98rem;
+      color: var(--text-muted);
+      max-width: 30rem;
+    }
+
+    .subtitle-quote {
+      margin-top: 0.35rem;
+      padding-left: 0.7rem;
+      border-left: 2px solid rgba(248, 187, 208, 0.65);
+      font-size: 0.88rem;
+      color: #fee2e2;
+    }
+
+    .love-lines {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+      margin-top: 0.6rem;
+    }
+
+    .love-pill {
+      font-size: 0.75rem;
+      border-radius: 999px;
+      padding: 0.25rem 0.7rem;
+      border: 1px solid rgba(248, 187, 208, 0.6);
+      background: radial-gradient(circle at 0 0, rgba(251, 113, 133, 0.35), transparent 60%);
+      color: #fef2f2;
+      white-space: nowrap;
+    }
+
+    .message-card {
+      margin-top: 1.1rem;
+      padding: 0.95rem 1rem;
+      border-radius: 1rem;
+      border: 1px solid rgba(248, 187, 208, 0.5);
+      background: radial-gradient(circle at top, rgba(252, 231, 243, 0.2), rgba(24, 24, 37, 0.8));
+      font-size: 0.9rem;
+      color: #fef2f2;
+    }
+
+    .message-card p + p {
+      margin-top: 0.65rem;
+    }
+
+    .signature {
+      margin-top: 0.9rem;
+      font-size: 0.85rem;
+      color: var(--text-muted);
+    }
+
+    .signature span {
+      color: #fecaca;
+    }
+
+    .bouquet-actions {
+      margin-top: 1.25rem;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.8rem;
+    }
+
+    .btn-soft {
+      border-radius: 999px;
+      border: 1px solid rgba(248, 187, 208, 0.85);
+      background: radial-gradient(circle at 0 0, rgba(248, 187, 208, 0.55), rgba(248, 113, 113, 0.9));
+      color: #3b0b17;
+      padding: 0.6rem 1.4rem;
+      font-size: 0.8rem;
+      text-transform: uppercase;
+      letter-spacing: 0.16em;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.45rem;
+      box-shadow:
+        0 12px 40px rgba(127, 29, 29, 0.7),
+        0 0 0 1px rgba(254, 202, 202, 0.7);
+      transition: transform 0.18s ease-out, box-shadow 0.18s ease-out;
+    }
+
+    .btn-soft:hover {
+      transform: translateY(-1px);
+      box-shadow:
+        0 18px 48px rgba(127, 29, 29, 0.85),
+        0 0 0 1px rgba(254, 226, 226, 0.9);
+    }
+
+    .btn-ghost {
+      border-radius: 999px;
+      border: 1px dashed rgba(248, 187, 208, 0.6);
+      background: radial-gradient(circle at top, rgba(15, 23, 42, 0.9), rgba(17, 24, 39, 0.85));
+      color: var(--text-main);
+      padding: 0.6rem 1.25rem;
+      font-size: 0.78rem;
+      text-transform: uppercase;
+      letter-spacing: 0.16em;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+      opacity: 0.92;
+    }
+
+    .tiny-note {
+      margin-top: 0.5rem;
+      font-size: 0.75rem;
+      color: var(--text-muted);
+    }
+
+    /* Click hearts */
+    .click-hearts-layer {
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      overflow: hidden;
+      z-index: 30;
+    }
+
+    .click-heart {
+      position: absolute;
+      font-size: 1.6rem;
+      color: #fecaca;
+      opacity: 0;
+      transform: translate(-50%, -50%) scale(0.4);
+      filter: drop-shadow(0 0 12px rgba(248, 250, 252, 0.95));
+      animation: clickHeartRise 1.1s ease-out forwards;
+    }
+
+    @keyframes clickHeartRise {
+      0% {
+        opacity: 0;
+        transform: translate(-50%, -30%) scale(0.4);
+      }
+      20% {
+        opacity: 1;
+        transform: translate(-50%, -60%) scale(0.9);
+      }
+      60% {
+        opacity: 1;
+        transform: translate(-50%, -120%) scale(1.1);
+      }
+      100% {
+        opacity: 0;
+        transform: translate(-50%, -180%) scale(1.2);
+      }
+    }
+
+    /* Right: abstract bouquet */
+    .bouquet-right {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+    }
+
+    .bouquet-glass {
+      width: min(340px, 100%);
+      aspect-ratio: 3 / 4;
+      border-radius: 999px 999px 40% 40%;
+      border: 1px solid rgba(248, 187, 208, 0.5);
+      background:
+        linear-gradient(to top, rgba(15, 23, 42, 0.95), rgba(15, 23, 42, 0.8)),
+        radial-gradient(circle at 30% 0, rgba(248, 250, 252, 0.25), transparent 60%);
+      box-shadow:
+        0 18px 60px rgba(15, 23, 42, 1),
+        0 0 0 1px rgba(248, 187, 208, 0.4);
+      position: relative;
+      overflow: hidden;
+      padding: 1.2rem 0.9rem 0.2rem;
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-end;
+    }
+
+    .stem-bundle {
+      position: absolute;
+      inset: 24% 14% 6%;
+      display: flex;
+      align-items: flex-end;
+      justify-content: center;
+      gap: 8px;
+      pointer-events: none;
+    }
+
+    .stem {
+      width: 6px;
+      height: 100%;
+      background: linear-gradient(to bottom, var(--leaf), var(--stem));
+      border-radius: 999px;
+      position: relative;
+      transform-origin: bottom center;
+      animation: sway 6s ease-in-out infinite alternate;
+    }
+
+    .stem:nth-child(1) {
+      height: 88%;
+      animation-delay: -1.5s;
+    }
+
+    .stem:nth-child(2) {
+      height: 96%;
+      animation-delay: -2.6s;
+    }
+
+    .stem:nth-child(3) {
+      height: 92%;
+      animation-delay: -3.5s;
+    }
+
+    .stem:nth-child(4) {
+      height: 84%;
+      animation-delay: -4.4s;
+    }
+
+    .stem:nth-child(5) {
+      height: 90%;
+      animation-delay: -5.2s;
+    }
+
+    @keyframes sway {
+      0% {
+        transform: rotate(-2deg);
+      }
+      50% {
+        transform: rotate(1.5deg);
+      }
+      100% {
+        transform: rotate(-1deg);
+      }
+    }
+
+    .leaf {
+      position: absolute;
+      width: 26px;
+      height: 14px;
+      border-radius: 999px 999px 999px 999px;
+      background: radial-gradient(circle at 0 0, #bbf7d0 0, #15803d 60%);
+      box-shadow: 0 0 12px rgba(34, 197, 94, 0.5);
+    }
+
+    .leaf--left {
+      left: -22px;
+      bottom: 26%;
+      transform: rotate(-30deg);
+    }
+
+    .leaf--right {
+      right: -22px;
+      bottom: 38%;
+      transform: rotate(28deg);
+    }
+
+    .flower-heads {
+      position: absolute;
+      inset: 12% 10% 48%;
+      display: grid;
+      place-items: center;
+      pointer-events: none;
+    }
+
+    .flower {
+      position: absolute;
+      width: 68px;
+      height: 80px;
+      display: grid;
+      place-items: center;
+      filter: drop-shadow(0 10px 25px rgba(248, 113, 133, 0.8));
+      transform-origin: center bottom;
+      animation: floatFlower 9s ease-in-out infinite alternate;
+    }
+
+    .flower--far-left {
+      left: 4%;
+      bottom: 0;
+      animation-delay: -7s;
+    }
+
+    .flower--left {
+      left: 18%;
+      bottom: 4%;
+      animation-delay: -4s;
+    }
+
+    .flower--center-left {
+      left: 34%;
+      bottom: 0;
+      animation-delay: -5.5s;
+    }
+
+    .flower--center {
+      left: 50%;
+      bottom: -2%;
+      transform: translateX(-50%);
+      animation-delay: -1.5s;
+    }
+
+    .flower--center-right {
+      right: 34%;
+      bottom: 1%;
+      animation-delay: -3s;
+    }
+
+    .flower--right {
+      right: 18%;
+      bottom: 4%;
+      animation-delay: -6s;
+    }
+
+    .flower--far-right {
+      right: 4%;
+      bottom: 0;
+      animation-delay: -2s;
+    }
+
+    @keyframes floatFlower {
+      0% {
+        transform: translate3d(0, 0, 0) scale(1);
+      }
+      50% {
+        transform: translate3d(0, -6px, 0) scale(1.03);
+      }
+      100% {
+        transform: translate3d(0, 3px, 0) scale(0.98);
+      }
+    }
+
+    .flower-core {
+      position: relative;
+      width: 40px;
+      height: 54px;
+      background: linear-gradient(to top, #be123c, #fb7185, #fecaca);
+      border-radius: 40px 40px 20px 20px;
+      box-shadow:
+        0 0 20px rgba(248, 113, 133, 0.9),
+        0 14px 22px rgba(127, 29, 29, 0.9);
+      overflow: hidden;
+    }
+
+    .flower-core::before,
+    .flower-core::after {
+      content: "";
+      position: absolute;
+      top: -20%;
+      width: 52%;
+      height: 70%;
+      background: linear-gradient(to top, #f97373, #fecaca);
+      border-radius: 999px 999px 30px 30px;
+    }
+
+    .flower-core::before {
+      left: -4%;
+      transform: rotate(-10deg);
+    }
+
+    .flower-core::after {
+      right: -4%;
+      transform: rotate(10deg);
+    }
+
+    .petal-ring {
+      position: absolute;
+      inset: 0;
+      border-radius: 40px 40px 20px 20px;
+      background: radial-gradient(circle at 30% 0, rgba(254, 242, 242, 0.45), transparent 60%);
+      mix-blend-mode: screen;
+      opacity: 0.65;
+    }
+
+    .flower-overlay-heart {
+      position: absolute;
+      inset: auto 0 -6px;
+      height: 20px;
+      display: grid;
+      place-items: center;
+      font-size: 0.8rem;
+    }
+
+    .flower-overlay-heart span {
+      text-shadow:
+        0 0 10px rgba(248, 250, 252, 0.95),
+        0 0 22px rgba(248, 250, 252, 0.85);
+    }
+
+    .floating-hearts {
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+      overflow: hidden;
+    }
+
+    .floating-heart {
+      position: absolute;
+      font-size: 0.9rem;
+      color: #fecaca;
+      opacity: 0;
+      animation: riseHeart 9s linear infinite;
+    }
+
+    .floating-heart:nth-child(1) { left: 12%; bottom: -8%; animation-delay: 0s; }
+    .floating-heart:nth-child(2) { left: 32%; bottom: -10%; animation-delay: -3s; }
+    .floating-heart:nth-child(3) { left: 64%; bottom: -12%; animation-delay: -5.5s; }
+    .floating-heart:nth-child(4) { left: 82%; bottom: -9%; animation-delay: -7.5s; }
+
+    @keyframes riseHeart {
+      0% {
+        transform: translate3d(0, 0, 0) scale(0.6);
+        opacity: 0;
+      }
+      20% {
+        opacity: 1;
+      }
+      80% {
+        opacity: 1;
+      }
+      100% {
+        transform: translate3d(0, -180px, 0) scale(1.1);
+        opacity: 0;
+      }
+    }
+
+    .base-ribbon {
+      position: absolute;
+      left: 50%;
+      bottom: 14%;
+      transform: translateX(-50%);
+      width: 70%;
+      height: 32px;
+      border-radius: 999px;
+      background:
+        linear-gradient(135deg, #f97373, #fb7185, #f472b6);
+      box-shadow:
+        0 8px 30px rgba(190, 24, 93, 0.8),
+        0 0 0 1px rgba(254, 205, 211, 0.9);
+    }
+
+    .ribbon-knot {
+      position: absolute;
+      left: 50%;
+      top: 48%;
+      transform: translate(-50%, -50%);
+      width: 38px;
+      height: 22px;
+      border-radius: 999px;
+      background: radial-gradient(circle at 30% 0, #fee2e2 0, #b91c1c 60%);
+      box-shadow: 0 6px 16px rgba(127, 29, 29, 0.9);
+    }
+
+    .ribbon-tail {
+      position: absolute;
+      width: 42px;
+      height: 42px;
+      background: linear-gradient(to bottom, #fb7185, #9f1239);
+      clip-path: polygon(0 0, 100% 0, 100% 70%, 50% 100%, 0 70%);
+      opacity: 0.9;
+    }
+
+    .ribbon-tail--left {
+      left: 36%;
+      bottom: -14%;
+      transform: rotate(-10deg);
+    }
+
+    .ribbon-tail--right {
+      right: 36%;
+      bottom: -16%;
+      transform: rotate(8deg);
+    }
+
+    .glass-highlight {
+      position: absolute;
+      inset: 6% 16% 50% 12%;
+      border-radius: 999px;
+      background: linear-gradient(to right, rgba(248, 250, 252, 0.2), transparent 35%);
+      mix-blend-mode: screen;
+      opacity: 0.65;
+    }
+
+    footer {
+      position: absolute;
+      inset-inline: 1.8rem;
+      bottom: 1.3rem;
+      display: flex;
+      justify-content: space-between;
+      font-size: 0.7rem;
+      color: rgba(254, 226, 226, 0.8);
+      pointer-events: none;
+    }
+
+    @media (max-width: 900px) {
+      footer {
+        position: static;
+        margin-top: 1rem;
+        font-size: 0.68rem;
+        opacity: 0.9;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <div class="stars"></div>
+  <div class="noise"></div>
+  <div class="click-hearts-layer" id="click-hearts-layer"></div>
+
+  <div class="bouquet-shell">
+    <div class="sparkle-orb sparkle-orb--left"></div>
+    <div class="sparkle-orb sparkle-orb--right"></div>
+
+    <!-- LEFT: Message for Kaila -->
+    <section class="bouquet-left">
+      <div class="intro-block">
+        <div class="tiny-label">A little galaxy of petals for</div>
+
+        <div class="title-row">
+          <h1 class="main-title">
+            For <span>Kaila</span>, from me.
+          </h1>
+        </div>
+
+        <p class="subtitle">
+          I can’t hand you real flowers through a screen, but I can still build
+          you a small universe where every petal is a reason why I love you mahal. 😊
+        </p>
+
+        <p class="subtitle-quote">
+          “If I could, I would plant a garden of moments with you and live there with you.”
+        </p>
+
+        <div class="love-lines">
+          <span class="love-pill">You are my favorite calm</span>
+          <span class="love-pill">You are my soulmate</span>
+          <span class="love-pill">You are the person i wanna build everything with</span>
+          <span class="love-pill">You are the person i wanna grow old with</span>
+          <span class="love-pill">You are a person that I admire a lot, more than you know</span>
+          <span class="love-pill"> Im sorry. Ill make it up and ill never hurt you again, I promise.</span>
+          <span class="love-pill">Mahal kita, baby ko. - Te amo. </span>
+        </div>
+
+        <div class="message-card">
+          <p>
+            Every time I think about you, it feels like the world slows down a bit.
+            I just can’t explain everything I feel when I think about you, mahal.
+            Ever since that day downstairs at Bone Daddies, I knew I’d found the person I want to spend the rest of my life with,
+            the person I want to marry and have kids with.
+            I love you so much, mahal. I love you more than I can say.
+            I love you more than I can think.
+            I love you more than I can feel.
+            I love you more than I can show.
+            I just can’t wait to call you mine again, for you to be my girlfriend again, and to marry me.
+            To be honest, I just can’t see my life without you, mahal.
+          </p>
+          <p>
+            This bouquet is made of light instead of leaves, but it carries all the
+            same things I’d tuck into real flowers: admiration, gratitude, loveand that
+            feeling that doesn’t really fit into words.
+            i just cant wait to be with you again mahal, to hold you in my arms again, to kiss you again, to be with you again.
+          </p>
+          <p class="signature">
+            With all my love, <span>from your nerd who coded you flowers.</span>
+          </p>
+        </div>
+
+        <div class="bouquet-actions">
+          <button class="btn-soft" id="hold-bouquet-btn">
+            Hold this bouquet
+            <span>♡</span>
+          </button>
+          <div class="btn-ghost">
+            Each bloom = one more reason I adore you
+          </div>
+        </div>
+
+        <div class="tiny-note">
+          (If you’re reading this, it means I was thinking about you enough to
+          turn it into code. That has to count for at least a dozen roses. )
+        </div>
+      </div>
+    </section>
+
+    <!-- RIGHT: Abstract digital bouquet -->
+    <aside class="bouquet-right">
+      <div class="bouquet-glass">
+        <div class="glass-highlight"></div>
+
+        <div class="stem-bundle">
+          <div class="stem">
+            <div class="leaf leaf--left"></div>
+          </div>
+          <div class="stem">
+            <div class="leaf leaf--right"></div>
+          </div>
+          <div class="stem">
+            <div class="leaf leaf--left"></div>
+          </div>
+          <div class="stem">
+            <div class="leaf leaf--right"></div>
+          </div>
+          <div class="stem">
+            <div class="leaf leaf--left"></div>
+          </div>
+        </div>
+
+        <div class="flower-heads">
+          <div class="flower flower--far-left">
+            <div class="petal-ring"></div>
+            <div class="flower-core"></div>
+            <div class="flower-overlay-heart">
+              <span>♡</span>
+            </div>
+          </div>
+
+          <div class="flower flower--left">
+            <div class="petal-ring"></div>
+            <div class="flower-core"></div>
+            <div class="flower-overlay-heart">
+              <span>✧</span>
+            </div>
+          </div>
+
+          <div class="flower flower--center-left">
+            <div class="petal-ring"></div>
+            <div class="flower-core"></div>
+            <div class="flower-overlay-heart">
+              <span>∞</span>
+            </div>
+          </div>
+
+          <div class="flower flower--center">
+            <div class="petal-ring"></div>
+            <div class="flower-core"></div>
+            <div class="flower-overlay-heart">
+              <span>♡</span>
+            </div>
+          </div>
+
+          <div class="flower flower--center-right">
+            <div class="petal-ring"></div>
+            <div class="flower-core"></div>
+            <div class="flower-overlay-heart">
+              <span>✧</span>
+            </div>
+          </div>
+
+          <div class="flower flower--right">
+            <div class="petal-ring"></div>
+            <div class="flower-core"></div>
+            <div class="flower-overlay-heart">
+              <span>∞</span>
+            </div>
+          </div>
+
+          <div class="flower flower--far-right">
+            <div class="petal-ring"></div>
+            <div class="flower-core"></div>
+            <div class="flower-overlay-heart">
+              <span>♡</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="base-ribbon">
+          <div class="ribbon-knot"></div>
+          <div class="ribbon-tail ribbon-tail--left"></div>
+          <div class="ribbon-tail ribbon-tail--right"></div>
+        </div>
+
+        <div class="floating-hearts">
+          <div class="floating-heart">♡</div>
+          <div class="floating-heart">✧</div>
+          <div class="floating-heart">♥</div>
+          <div class="floating-heart">❣</div>
+        </div>
+      </div>
+    </aside>
+
+    <footer>
+      <span>Hand-coded just for you, Kaila.</span>
+      <span>Refresh any time you need a bouquet.</span>
+    </footer>
+  </div>
+
+  <script>
+    (function () {
+      const btn = document.getElementById("hold-bouquet-btn");
+      const layer = document.getElementById("click-hearts-layer");
+      if (!btn || !layer) return;
+
+      const heartChars = ["♡", "♥", "❣", "✧"];
+
+      btn.addEventListener("click", () => {
+        const rect = btn.getBoundingClientRect();
+        const x = rect.left + rect.width / 2;
+        const y = rect.top + rect.height / 2;
+
+        for (let i = 0; i < 3; i++) {
+          const heart = document.createElement("div");
+          heart.className = "click-heart";
+          heart.textContent = heartChars[Math.floor(Math.random() * heartChars.length)];
+
+          const jitterX = (Math.random() - 0.5) * 60;
+          const jitterY = (Math.random() - 0.5) * 10;
+
+          heart.style.left = x + jitterX + "px";
+          heart.style.top = y + jitterY + "px";
+          heart.style.animationDelay = (i * 0.08) + "s";
+
+          layer.appendChild(heart);
+
+          heart.addEventListener("animationend", () => {
+            heart.remove();
+          });
+        }
+      });
+    })();
+  </script>
+</body>
+</html>
